@@ -13,6 +13,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "../../packages/db/src/index.ts"  ],
+  "paths": {
+    "@/*": ["apps/web/*"] // This creates the alias for `@/`
+  },
   "exclude": ["node_modules"]
 }

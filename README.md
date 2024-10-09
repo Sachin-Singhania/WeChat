@@ -79,3 +79,11 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
 - [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
 - [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+
+<!-- todo  -->
+<!-- * 1) UI for profile page /profile-->
+<!-- * 2)Change Password in profile-->
+<!-- * 3) Adding Layout.tsx to home page for left (friends/groups) and right (chats) also add voice and video call option and give pointer event none (coming soon) -->
+<!-- * 4) Profile Display for the person sending the message -->
+<!-- * 5) Fetching the room database of that specific user && Leaving group database call -->

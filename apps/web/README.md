@@ -26,3 +26,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<!-- * Steps for my project
+    ! 1) Singleton file ( class websocket )
+    TODO every websocket server will have 5 rooms , so object with serverid as key with no. of rooms as value [{id:1,rooms:2},{id:2,rooms:1}]
+    
+-->

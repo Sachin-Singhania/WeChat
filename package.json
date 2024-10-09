@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "Chat-app",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,13 +8,21 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
-    "turbo": "^1.12.4"
+    "turbo": "latest"
   },
-  "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
+  },
+  "packageManager": "npm@10.5.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "emoji-picker-react": "^4.11.1",
+    "prisma": "^5.13.0"
   }
 }

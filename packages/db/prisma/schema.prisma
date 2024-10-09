@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Generator for Prisma Client
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Datasource pointing to PostgreSQL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Ensure this is set in your environment variables
+}
+
+model User {
+  uid       String    @id @default(uuid())
+  profile   String?
+  name      String
+  username  String    @unique
+  email     String    @unique
+  password  String
+  DOB       DateTime?
+  age       Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  rooms      Room[]        @relation("RoomOwner")
+  messages   UserMessage[]
+  adminRoles Admin[]
+
+  // Friend requests sent by this user
+  requestsSent     FriendRequest[] @relation("FriendRequestsSent")
+  // Friend requests received by this user
+  requestsReceived FriendRequest[] @relation("FriendRequestsReceived")
+  // Friends list
+  friends          Friend[]        @relation("FriendsOf")
+  // Block list where user is the blocker
+  blockers         BlockList[]     @relation("Blocker")
+  // Block list where user is blocked
+  blockedUsers     BlockList[]     @relation("Blocked")
+
+  reactions  MessageReaction[] @relation("UserReactions")
+  Friend     Friend[]
+  RoomAdmin  RoomAdmin[]
+  RoomMember RoomMember[]
+
+  @@map("users")
+}
+
+model FriendRequest {
+  requestId  String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  status     String // "pending", "accepted", "rejected"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sender   User @relation("FriendRequestsSent", fields: [senderId], references: [uid])
+  receiver User @relation("FriendRequestsReceived", fields: [receiverId], references: [uid])
+
+  @@map("friend_requests")
+}
+
+model Friend {
+  friendId     String   @id @default(uuid())
+  userId       String
+  friendUserId String
+  createdAt    DateTime @default(now())
+
+  user       User @relation(fields: [userId], references: [uid])
+  friendUser User @relation("FriendsOf", fields: [friendUserId], references: [uid])
+
+  @@map("friends")
+}
+
+model BlockList {
+  blockId   String   @id @default(uuid())
+  blockerId String
+  blockedId String
+  createdAt DateTime @default(now())
+
+  blocker User @relation("Blocker", fields: [blockerId], references: [uid])
+  blocked User @relation("Blocked", fields: [blockedId], references: [uid])
+
+  @@map("block_list")
+}
+
+model Room {
+  roomId      String   @id @default(uuid())
+  roomName    String
+  profile     String?
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  roomType    String
+
+  owner       User          @relation(fields: [ownerId], references: [uid], name: "RoomOwner")
+  messages    UserMessage[]
+  roomAdmins  RoomAdmin[]
+  roomMembers RoomMember[]
+
+  @@map("rooms")
+}
+
+model RoomAdmin {
+  roomAdminId String   @id @default(uuid())
+  roomId      String
+  uid         String
+  assignedAt  DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [roomId])
+  user User @relation(fields: [uid], references: [uid])
+
+  @@map("room_admins")
+}
+
+model RoomMember {
+  roomMemberId String   @id @default(uuid())
+  roomId       String
+  uid          String
+  joinedAt     DateTime @default(now())
+  isGroupAdmin Boolean  @default(false)
+
+  room Room @relation(fields: [roomId], references: [roomId])
+  user User @relation(fields: [uid], references: [uid])
+
+  @@map("room_members")
+}
+
+model UserMessage {
+  messageId   String   @id @default(uuid())
+  roomId      String
+  uid         String
+  content     String
+  messageType String
+  timestamp   DateTime @default(now())
+  edited      Boolean  @default(false)
+  isDeleted   Boolean  @default(false)
+
+  room      Room              @relation(fields: [roomId], references: [roomId])
+  user      User              @relation(fields: [uid], references: [uid])
+  reactions MessageReaction[]
+
+  @@map("user_messages")
+}
+
+model MessageReaction {
+  reactionId   String   @id @default(uuid())
+  messageId    String
+  uid          String
+  reactionType String
+  timestamp    DateTime @default(now())
+
+  user    User        @relation(fields: [uid], references: [uid], name: "UserReactions")
+  message UserMessage @relation(fields: [messageId], references: [messageId])
+
+  @@map("message_reactions")
+}
+
+model Admin {
+  adminId   String   @id @default(uuid())
+  uid       String
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [uid], references: [uid])
+
+  @@map("admins")
+}
