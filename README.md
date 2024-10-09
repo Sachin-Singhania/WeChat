@@ -1,4 +1,8 @@
-# Turborepo starter
+# WeChat is a scalable chatting platform build with Websocket + Redis + Kafka , allows users to chat each other privately or in a group . This is currently in Development Mode
+![image](https://github.com/user-attachments/assets/0cd2fa1c-524e-4722-ada3-d4ac57191225)
+![image](https://github.com/user-attachments/assets/a1b4534a-d45c-425f-8ec2-3665d74521a1)
+
+
 
 This is an official starter Turborepo.
 
